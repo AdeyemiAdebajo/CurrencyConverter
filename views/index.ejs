@@ -6,6 +6,35 @@
     <title>Money Converter </title>
 </head>
 <body>
-    
+    <h1>Money Converter</h1>
+
+    <% if (local.moneyConverted){%>
+    <p>Converted Amount: <%= local.convertedAmount %> <%= local.toCurrency %></p>
+    <% } else { %>
+    <p>Enter the amount and select currencies to convert.</p>
+    <%
+    }   %>
+    <form action="/convert" method="POST">
+        <label for="amount">Amount:</label>
+        <input type="number" id="amount" name="amount" required>
+        
+        <label for="fromCurrency">From </label>
+        <select id="fromCurrency" name="fromCurrency" required>
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="GBP">GBP</option>
+            <!-- Add more currencies as needed -->
+        </select>
+
+        <label for="toCurrency">To </label>
+        <select id="toCurrency" name="toCurrency" required>
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="GBP">GBP</option>
+            <!-- Add more currencies as needed -->
+        </select>
+
+        <button type="submit">Convert</button>
+
 </body>
 </html>
