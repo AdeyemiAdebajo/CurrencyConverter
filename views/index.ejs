@@ -8,8 +8,8 @@
 <body>
     <h1>Money Converter</h1>
 
-    <% if (local.moneyConverted){%>
-    <p>Converted Amount: <%= local.convertedAmount %> <%= local.toCurrency %></p>
+    <% if (locals.moneyConverted){%>
+    <p><%= amount%> <%=locals.fromCurrency%> is equivalent to <%= locals.convertedAmount %><%= locals.toCurrency %></p>
     <% } else { %>
     <p>Enter the amount and select currencies to convert.</p>
     <%
