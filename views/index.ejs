@@ -9,7 +9,7 @@
     <h1>Money Converter</h1>
 
     <% if (locals.moneyConverted){%>
-    <p><%= amount%> <%=locals.fromCurrency%> is equivalent to <%= locals.convertedAmount %><%= locals.toCurrency %></p>
+    <p><%= amount%> <%=locals.fromCurrency%> is equivalent to <%= locals.moneyConverted%><%= locals.toCurrency %></p>
     <% } else { %>
     <p>Enter the amount and select currencies to convert.</p>
     <%
