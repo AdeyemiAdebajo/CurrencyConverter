@@ -23,8 +23,8 @@ app.get("/", async (req, res) => {
   res.render("index.ejs", {
     currencyCodes: codes,
     currencyNames: namesMap,
-     moneyConverted: null,
-     fromCurrency: null,
+    moneyConverted: null,
+    fromCurrency: null,
     toCurrency: null,
     amount: null,
     result: null,
@@ -36,7 +36,7 @@ app.post("/convert", (req, res) => {
   const tocurrency = req.body["toCurrency"];
   const amount = parseFloat(req.body["amount"]);
   const exchangeRate = 1.2;
-  const convertedAmount = (req.body["amount"]* exchangeRate).toFixed(2);
+  const convertedAmount = (req.body["amount"] * exchangeRate).toFixed(2);
 
   console.log(`From: ${frmcurrency}, To: ${tocurrency}, Amount: ${amount}`);
   res.render("index.ejs", {
