@@ -1,7 +1,9 @@
 import express from "express";
 import bodyParser from "body-parser";
 import currencyCodes from "currency-codes";
+import request from "request";
 
+// const request= request();
 const app = express();
 let apikey = "f986bcf5750b8c55074bcfbb9a8ab3d9";
 
@@ -32,22 +34,46 @@ app.get("/", async (req, res) => {
 });
 
 app.post("/convert", (req, res) => {
-  const frmcurrency = req.body["fromCurrency"];
-  const tocurrency = req.body["toCurrency"];
-  const amount = parseFloat(req.body["amount"]);
-  const exchangeRate = 1.2;
-  const convertedAmount = (req.body["amount"] * exchangeRate).toFixed(2);
+  let frmcurrency = req.body["fromCurrency"];
+  let tocurrency = req.body["toCurrency"];
+  let amount = parseFloat(req.body["amount"]);
+  let appurl = "http://api.currencylayer.com/live?access_key=" + apikey;
+  
+      let convertedAmount = 0;
+     
+  request(appurl, function (err, response, body) {
+    if (err) {
+      console.log(err);
+    } else {
+      let converter = JSON.parse(body);
+      let rateFrom = converter.quotes["USD" + frmcurrency];
+      let rateTo = converter.quotes["USD" + tocurrency];
 
-  console.log(`From: ${frmcurrency}, To: ${tocurrency}, Amount: ${amount}`);
-  res.render("index.ejs", {
-    currencyCodes: codes,
-    currencyNames: namesMap,
-    moneyConverted: convertedAmount,
-    fromCurrency: frmcurrency,
-    toCurrency: tocurrency,
-    amount: amount,
-    result: `Converted ${amount} ${frmcurrency} to ${tocurrency}`,
+      if (frmcurrency === tocurrency) {
+        convertedAmount = amount;
+      } else if (frmcurrency === "USD") {
+        convertedAmount = rateTo * amount;
+      } else if (tocurrency === "USD") {
+        convertedAmount = amount / rateFrom;
+      } else {
+        const usdAmount = amount / rateFrom ;
+        convertedAmount = usdAmount * rateTo ;
+      }
+      console.log(`Converted ${amount} ${frmcurrency} to ${tocurrency} = ${convertedAmount}`);
+    }
+     
+
+    res.render("index.ejs", {
+      currencyCodes: codes,
+      currencyNames: namesMap,
+      moneyConverted: convertedAmount.toFixed(2),
+      fromCurrency: frmcurrency,
+      toCurrency: tocurrency,
+      amount: amount,
+    //   result: `Converted ${amount} ${frmcurrency} to ${frmcurrency}`,
+    });
   });
+  
 });
 
 app.listen(port, () => {
