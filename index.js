@@ -2,16 +2,20 @@ import express from "express";
 import bodyParser from "body-parser";
 import currencyCodes from "currency-codes";
 import request from "request";
+import dotenv from "dotenv";
 
-// const request= request();
+dotenv.config();
+
+
 const app = express();
-let apikey = "f986bcf5750b8c55074bcfbb9a8ab3d9";
+let  apikey = process.env.API_KEY; // Default API key if not set in .env
+
 
 const port = 3000;
-app.use(bodyParser.urlencoded({ extended: true }));
-const seen = new Set();
-const codes = [];
-const namesMap = {};
+app.use(bodyParser.urlencoded({ extended: true }));     
+const seen = new Set(); // To track unique currency codes
+const codes = []; // Array to store unique currency codes
+const namesMap = {}; // Object to map currency codes to names
 
 currencyCodes.data.forEach((c) => {
   if (!seen.has(c.code)) {
@@ -22,8 +26,9 @@ currencyCodes.data.forEach((c) => {
 });
 
 app.get("/", async (req, res) => {
+    // Render the index page with currency codes and names
   res.render("index.ejs", {
-    currencyCodes: codes,
+    currencyCodes: codes, // Pass the unique currency codes
     currencyNames: namesMap,
     moneyConverted: null,
     fromCurrency: null,
@@ -35,8 +40,8 @@ app.get("/", async (req, res) => {
 
 app.post("/convert", (req, res) => {
   let frmcurrency = req.body["fromCurrency"];
-  let tocurrency = req.body["toCurrency"];
-  let amount = parseFloat(req.body["amount"]);
+  let tocurrency = req.body["toCurrency"]; // Get the selected currencies from the form
+  let amount = parseFloat(req.body["amount"]); // Convert amount to a number
   let appurl = "http://api.currencylayer.com/live?access_key=" + apikey;
   
       let convertedAmount = 0;
@@ -46,8 +51,8 @@ app.post("/convert", (req, res) => {
       console.log(err);
     } else {
       let converter = JSON.parse(body);
-      let rateFrom = converter.quotes["USD" + frmcurrency];
-      let rateTo = converter.quotes["USD" + tocurrency];
+      let rateFrom = converter.quotes["USD" + frmcurrency]; // Get the exchange rate for the from currency
+      let rateTo = converter.quotes["USD" + tocurrency]; // Get the exchange rate for the to currency
 
       if (frmcurrency === tocurrency) {
         convertedAmount = amount;
@@ -70,7 +75,7 @@ app.post("/convert", (req, res) => {
       fromCurrency: frmcurrency,
       toCurrency: tocurrency,
       amount: amount,
-    //   result: `Converted ${amount} ${frmcurrency} to ${frmcurrency}`,
+    
     });
   });
   
