@@ -5,14 +5,12 @@ import request from "request";
 import dotenv from "dotenv";
 
 dotenv.config();
-
-
 const app = express();
 let  apikey = process.env.API_KEY; // Default API key if not set in .env
-
-
 const port = 3000;
 app.use(bodyParser.urlencoded({ extended: true }));     
+app.use(express.static("public"));
+
 const seen = new Set(); // To track unique currency codes
 const codes = []; // Array to store unique currency codes
 const namesMap = {}; // Object to map currency codes to names
@@ -28,6 +26,7 @@ currencyCodes.data.forEach((c) => {
 app.get("/", async (req, res) => {
     // Render the index page with currency codes and names
   res.render("index.ejs", {
+    title: "Money Converter",
     currencyCodes: codes, // Pass the unique currency codes
     currencyNames: namesMap,
     moneyConverted: null,
@@ -69,6 +68,7 @@ app.post("/convert", (req, res) => {
      
 
     res.render("index.ejs", {
+      title: "Money Converter",
       currencyCodes: codes,
       currencyNames: namesMap,
       moneyConverted: convertedAmount.toFixed(2),

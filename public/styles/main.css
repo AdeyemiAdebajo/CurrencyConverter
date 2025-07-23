@@ -1,0 +1,89 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 20px;
+  background-color: #f4f4f4;
+  color: #333;
+}
+.currency {
+  font-weight: bold;
+  color: #0077cc;
+  font-size: 1.5rem;
+}
+
+header, footer {
+  text-align: center;
+  padding: 1rem;
+  background-color: #0077cc;
+  color: white;
+}
+
+main {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 1rem;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+input, select, button {
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  background-color: #0077cc;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #005fa3;
+}
+
+p {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 768px) {
+  main {
+    margin: 10px;
+    padding: 1rem;
+  }
+
+  form {
+    gap: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 10px;
+  }
+
+  header, footer {
+    font-size: 0.9rem;
+    padding: 0.75rem;
+  }
+
+  input, select, button {
+    font-size: 0.9rem;
+  }
+}
