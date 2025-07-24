@@ -30,7 +30,7 @@
         </option> 
       <% }) %>
     </select><br />
-
+<button type="button" id="swapButton">↕ </button>
     <label for="toCurrency">To:</label>
     <select id="toCurrency" name="toCurrency" required>
       <% currencyCodes.forEach(code => { %>
@@ -39,10 +39,31 @@
         </option>
       <% }) %>
     </select>
+    
+
+  <!-- <label for="toCurrency">To:</label>
+  <select id="toCurrency" name="toCurrency" required>
+    <% currencyCodes.forEach(code => { %>
+      <option value="<%= code %>" <%= toCurrency === code ? 'selected' : '' %>>
+        <%= code %> – <%= currencyNames[code] %>
+      </option>
+    <% }) %>
+  </select> -->
 
     <button type="submit">Convert</button>
   </form>
+  <script>
+  document.getElementById("swapButton").addEventListener("click", function () {
+    const fromSelect = document.getElementById("fromCurrency");
+    const toSelect = document.getElementById("toCurrency");
+
+    const temp = fromSelect.value;
+    fromSelect.value = toSelect.value;
+    toSelect.value = temp;
+  });
+</script>
   
 <%- include("partials/footer.ejs") %>
+
 </body>
 </html>

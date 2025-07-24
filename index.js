@@ -23,6 +23,7 @@ currencyCodes.data.forEach((c) => {
   }
 });
 
+
 app.get("/", async (req, res) => {
     // Render the index page with currency codes and names
   res.render("index.ejs", {
