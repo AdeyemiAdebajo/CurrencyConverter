@@ -6,9 +6,9 @@ import dotenv from "dotenv";
 
 dotenv.config();
 const app = express();
-let  apikey = process.env.API_KEY; // Default API key if not set in .env
+let apikey = process.env.API_KEY; // Default API key if not set in .env
 const port = 3000;
-app.use(bodyParser.urlencoded({ extended: true }));     
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 const seen = new Set(); // To track unique currency codes
@@ -22,12 +22,16 @@ currencyCodes.data.forEach((c) => {
     namesMap[c.code] = c.currency;
   }
 });
-
-
-app.get("/", async (req, res) => {
-    // Render the index page with currency codes and names
+app.get("/", (req, res) => {
   res.render("index.ejs", {
-    title: "Money Converter",
+    title: "Home",
+  });
+});
+
+app.get("/convert", async (req, res) => {
+  // Render the index page with currency codes and names
+  res.render("convert.ejs", {
+    title: "Convert",
     currencyCodes: codes, // Pass the unique currency codes
     currencyNames: namesMap,
     moneyConverted: null,
@@ -43,9 +47,9 @@ app.post("/convert", (req, res) => {
   let tocurrency = req.body["toCurrency"]; // Get the selected currencies from the form
   let amount = parseFloat(req.body["amount"]); // Convert amount to a number
   let appurl = "http://api.currencylayer.com/live?access_key=" + apikey;
-  
-      let convertedAmount = 0;
-     
+
+  let convertedAmount = 0;
+
   request(appurl, function (err, response, body) {
     if (err) {
       console.log(err);
@@ -61,25 +65,33 @@ app.post("/convert", (req, res) => {
       } else if (tocurrency === "USD") {
         convertedAmount = amount / rateFrom;
       } else {
-        const usdAmount = amount / rateFrom ;
-        convertedAmount = usdAmount * rateTo ;
+        const usdAmount = amount / rateFrom;
+        convertedAmount = usdAmount * rateTo;
       }
-      console.log(`Converted ${amount} ${frmcurrency} to ${tocurrency} = ${convertedAmount}`);
+      console.log(
+        `Converted ${amount} ${frmcurrency} to ${tocurrency} = ${convertedAmount}`
+      );
     }
-     
+    let moneyConverted;
+    if (convertedAmount.toFixed(2) === "0.00") {
+      moneyConverted = convertedAmount.toFixed(4);
+    } else {
+      moneyConverted = convertedAmount.toFixed(2);
+    }
 
-    res.render("index.ejs", {
-      title: "Money Converter",
+    res.render("convert.ejs", {
+      title: "convert ",
       currencyCodes: codes,
       currencyNames: namesMap,
-      moneyConverted: convertedAmount.toFixed(2),
+      moneyConverted,
       fromCurrency: frmcurrency,
       toCurrency: tocurrency,
       amount: amount,
-    
     });
   });
-  
+});
+app.get("/about", (req, res) => {
+  res.render("about.ejs", { title: "About" });
 });
 
 app.listen(port, () => {

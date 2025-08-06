@@ -1,69 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Money Converter</title>
-  <link rel="stylesheet" href="/styles.css" />
-</head>
-<body>
-  <%- include("partials/header.ejs") %>
-
-  <% if (locals.moneyConverted) { %>
-    <p class="currency"> <%= locals.amount %> <%= currencyNames[locals.fromCurrency] %> 
-  is equivalent to 
-  <%= locals.moneyConverted %> <%= currencyNames[locals.toCurrency] %></p>
-  <% } else { %>
-    <p>Enter the amount and select currencies to convert.</p>
-  <% } %>
-
-  <form action="/convert" method="POST">
-    <label for="amount">Amount:</label>
-    <input type="number" id="amount" name="amount" required value="<%= amount || '' %>"><br />
-
-    <label for="fromCurrency">From:</label> 
-    <select id="fromCurrency" name="fromCurrency" required>
-      <% currencyCodes.forEach(code => { %>
-        <option value="<%= code %>" <%= fromCurrency === code ? 'selected' : '' %>>
-          <%= code %> – <%= currencyNames[code] %>
-          <br />
-        </option> 
-      <% }) %>
-    </select><br />
-<button type="button" id="swapButton">↕ </button>
-    <label for="toCurrency">To:</label>
-    <select id="toCurrency" name="toCurrency" required>
-      <% currencyCodes.forEach(code => { %>
-        <option value="<%= code %>" <%= toCurrency === code ? 'selected' : '' %>>
-          <%= code %> – <%= currencyNames[code] %>
-        </option>
-      <% }) %>
-    </select>
-    
-
-  <!-- <label for="toCurrency">To:</label>
-  <select id="toCurrency" name="toCurrency" required>
-    <% currencyCodes.forEach(code => { %>
-      <option value="<%= code %>" <%= toCurrency === code ? 'selected' : '' %>>
-        <%= code %> – <%= currencyNames[code] %>
-      </option>
-    <% }) %>
-  </select> -->
-
-    <button type="submit">Convert</button>
-  </form>
-  <script>
-  document.getElementById("swapButton").addEventListener("click", function () {
-    const fromSelect = document.getElementById("fromCurrency");
-    const toSelect = document.getElementById("toCurrency");
-
-    const temp = fromSelect.value;
-    fromSelect.value = toSelect.value;
-    toSelect.value = temp;
-  });
-</script>
-  
-<%- include("partials/footer.ejs") %>
-
-</body>
-</html>
+ <%- include("partials/header.ejs") %>
+ <section class="hero">
+        <h1>Welcome to Currency Converter</h1>
+        <p>Convert currencies easily and quickly!</p>
+        <a href="/convert" class="btn btn-primary">Start Converting</a>
+        
+</section>  
+        <%- include("partials/footer.ejs") %>
