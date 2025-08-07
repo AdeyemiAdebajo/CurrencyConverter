@@ -9,9 +9,11 @@
     <p id="convertAmount">Enter the amount and select currencies to convert.</p>
   <% } %>
 
-  <form action="/convert" method="POST">
-    <label for="amount">Amount:</label>
-    <input type="number" id="amount" name="amount" required value="<%= amount || '' %>"><br />
+  <form action="/convert" method="POST" class="form-floating">
+   <div class="form-floating mb-3">
+  <input type="number" class="form-control" id="amount" name="amount" placeholder="Amount" value="<%= amount || '' %>" required>
+  <label for="amount"></label>
+</div>
 
     <label for="fromCurrency">From:</label> 
     <select id="fromCurrency" name="fromCurrency" required>
@@ -31,17 +33,7 @@
         </option>
       <% }) %>
     </select>
-    
-
-  <!-- <label for="toCurrency">To:</label>
-  <select id="toCurrency" name="toCurrency" required>
-    <% currencyCodes.forEach(code => { %>
-      <option value="<%= code %>" <%= toCurrency === code ? 'selected' : '' %>>
-        <%= code %> – <%= currencyNames[code] %>
-      </option>
-    <% }) %>
-  </select> -->
-
+  
     <button type="submit">Convert</button>
   </form>
   <script>
